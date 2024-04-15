@@ -24,39 +24,27 @@ app = Flask(__name__)
 def get_network_info():
     interface_name = request.args.get('interface', '')
     network_info = {}
-    if interface_name:
-        # Check the operating system
-        if platform.system() == 'Windows':
-            # Use 'ipconfig' and 'findstr' to get the interface details
-            command = f'ipconfig | findstr /R /C:"{interface_name}"'
-            process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
-            ip_address, _ = process.communicate()
-            ip_address = ip_address.decode().strip()
-        else:
-            # Use 'ip addr show' for Unix-like systems
-            command = f'ip addr show {interface_name}'
-            process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
-            ip_address, _ = process.communicate()
-            ip_address = ip_address.decode().strip()
 
-        if ip_address and 'cannot find' not in ip_address.lower():
-            network_info[interface_name] = ip_address
+    # Define the command based on the OS and interface name
+    command = 'ipconfig' if platform.system() == 'Windows' else 'ip addr'
+    if interface_name:
+        command += f' | findstr /R /C:"{interface_name}"' if platform.system() == 'Windows' else f' show {interface_name}'
+
+    # Execute the command
+    process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+    output, _ = process.communicate()
+    output = output.decode().strip()
+
+    # Process the output based on the presence of the interface name
+    if interface_name:
+        if output and 'cannot find' not in output.lower():
+            network_info[interface_name] = output
         else:
             return jsonify(error='Interface not found'), 404
     else:
-        # Get all interfaces
-        if platform.system() == 'Windows':
-            command = 'ipconfig'
-        else:
-            command = 'ip addr'
-        # Use 'subprocess' to run the command and get the output
-        process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
-        interfaces, _ = process.communicate()
-        interfaces = interfaces.decode().strip()
-        network_info = {'interfaces': interfaces}
-        # Return the interfaces as JSON
-    return jsonify(network_info)
+        network_info = {'interfaces': output}
 
+    return jsonify(network_info)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=80)
