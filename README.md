@@ -76,6 +76,6 @@ This application consists of two Docker containers that work together to provide
 - Error handling and logging have been implemented for robustness.
 - Unit tests are included to ensure the API’s functionality.
 ### Assumptions Made During Development
-- The application assumes that it is running on a Linux-based system where the ip addr command is available.
-- Network interface details are obtained using shell commands executed from within the Python code.
+- The application assumes that it doesn't know wheter it is running on a Linux-based system where the ip addr command is available or a Windows based one.
+- Network interface details are obtained using then shell or terminal commands executed from within the Python code.
 - The Dockerfiles for both the server and client are set up to install all necessary dependencies.
