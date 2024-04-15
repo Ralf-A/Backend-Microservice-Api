@@ -20,7 +20,7 @@ This application consists of two Docker containers that work together to provide
 ### Running the Containers
 #### 1. To start the containers, run:
 
-- `**docker-compose up`
+- `docker-compose up`
 
 #### 2. To run the containers in the background, use:
 
