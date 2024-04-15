@@ -40,6 +40,10 @@ This application consists of two Docker containers that work together to provide
 }
 ```
 
+- ** Example**:
+
+- `localhost:80/network`
+
 #### GET /network?interface={interface_name}
 - **Description**: Returns details of the specified network interface.
 - **Parameters**:
@@ -53,13 +57,17 @@ This application consists of two Docker containers that work together to provide
 ```
 
 - **Error Response**:
-- 
+
 ```json
 {
   "error": "Interface not found"
 }
 ```
 
+- ** Example**:
+
+- `localhost:80/network?interface=eth0`
+  
 ### HTTP Client (Container 2)
 - Periodically calls the server’s endpoint and prints the results to the console.
 #### Important Notes
