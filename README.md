@@ -40,7 +40,7 @@ This application consists of two Docker containers that work together to provide
 }
 ```
 
-- ** Example**:
+- **Example**:
 
 - `localhost:80/network`
 
@@ -64,7 +64,7 @@ This application consists of two Docker containers that work together to provide
 }
 ```
 
-- ** Example**:
+- **Example**:
 
 - `localhost:80/network?interface=eth0`
   
